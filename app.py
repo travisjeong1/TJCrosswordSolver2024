@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template_string, request
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -11,9 +11,13 @@ import os
 
 app = Flask(__name__)
 
+def get_template(filename):
+    with open(filename) as file:
+        return file.read()
+
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template_string(get_template('index.html'))
 
 @app.route('/solve', methods=['POST'])
 def solve():
@@ -30,7 +34,7 @@ def solve_for_date(date_str):
     
     # Check if the date is in the future
     if date > datetime.today():
-        return render_template('error.html', message="The selected date is in the future. Please choose a past or current date.")
+        return render_template_string(get_template('error.html'), message="The selected date is in the future. Please choose a past or current date.")
 
     formatted_date = date.strftime('%Y/%m/%d')  # Ensures the date is in 0000/00/00 format
     
@@ -46,7 +50,7 @@ def solve_for_date(date_str):
 
     soup = BeautifulSoup(page_source, 'html.parser')
 
-    # Use elemnts to access the required data
+    # Use elements to access the required data
     html = soup.find('html', class_='js')
     body = html.find('body', class_='archive date wp-embed-responsive')
     page = body.find('div', id='page', class_='hfeed site')
@@ -86,7 +90,7 @@ def solve_for_date(date_str):
     else:
         img_src = None
 
-    return render_template('result.html', date=date_str, across=across_answers, down=down_answers, img_src=img_src)
+    return render_template_string(get_template('result.html'), date=date_str, across=across_answers, down=down_answers, img_src=img_src)
 
 def format_clues(clue_html):
     # Remove <br> tags and split by new lines
@@ -106,5 +110,4 @@ def format_clues(clue_html):
     return formatted_clues
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
