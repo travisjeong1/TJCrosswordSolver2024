@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from datetime import datetime
 import re
 
@@ -27,14 +27,17 @@ def solve_today():
 def solve_for_date(date_str):
     date = datetime.strptime(date_str, '%Y-%m-%d')
     
+    # Check if the date is in the future
     if date > datetime.today():
         return render_template('error.html', message="The selected date is in the future. Please choose a past or current date.")
 
-    formatted_date = date.strftime('%Y/%m/%d')
+    formatted_date = date.strftime('%Y/%m/%d')  # Ensures the date is in 0000/00/00 format
+    
     url = f"https://laxcrossword.com/{formatted_date}"
 
+    # Use Selenium to handle dynamic content loaded via JavaScript
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--headless")  # Run in headless mode
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
     driver.get(url)
     page_source = driver.page_source
@@ -42,13 +45,14 @@ def solve_for_date(date_str):
 
     soup = BeautifulSoup(page_source, 'html.parser')
 
+    # Use elemnts to access the required data
     html = soup.find('html', class_='js')
     body = html.find('body', class_='archive date wp-embed-responsive')
     page = body.find('div', id='page', class_='hfeed site')
     site_content = page.find('div', class_='site-content')
     section = site_content.find('section', class_='content-area')
     main = section.find('main', class_='site-main', role='main')
-    article = main.find('article')
+    article = main.find('article')  # Since the article ID can change, just find the first article
     entry_content = article.find('div', class_='entry-content')
     across_googlies = entry_content.find('div', id='across_googlies')
     clue_list = across_googlies.find('div', id='clue_list')
@@ -70,6 +74,7 @@ def solve_for_date(date_str):
         across_answers = ["Across/Down headers not found"]
         down_answers = ["Across/Down headers not found"]
 
+    # Find the crossword grid image
     grid_div = entry_content.find('div', id='grid')
     if grid_div:
         img_tag = grid_div.find('img')
@@ -83,17 +88,18 @@ def solve_for_date(date_str):
     return render_template('result.html', date=date_str, across=across_answers, down=down_answers, img_src=img_src)
 
 def format_clues(clue_html):
+    # Remove <br> tags and split by new lines
     clues = clue_html.replace('<br/>', '\n').replace('<br>', '\n').split('\n')
     formatted_clues = []
 
     for clue in clues:
-        clue = clue.strip()
-        if clue:
+        clue = clue.strip() #changes presentation of clues
+        if clue: 
             clue = re.sub(r'(\d+)\s', r'\1. ', clue)
             clue = clue.replace(':', '-')
             if '-' in clue:
                 parts = clue.rsplit('-', 1)
-                clue = f'{parts[0]}- <u>{parts[1].strip()}</u>'
+                clue = f'{parts[0]}- <u>{parts[1].strip()}</u>' #underline
             formatted_clues.append(f"{clue}")
 
     return formatted_clues
