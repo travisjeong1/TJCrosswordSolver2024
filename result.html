@@ -4,64 +4,35 @@
     <meta charset="UTF-8">
     <title>Crossword Results</title>
     <link rel="stylesheet" href="style.css">
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const date = urlParams.get('date');
-
-            if (date) {
-                fetch(`https://your-api-endpoint.com/api/solve/${date}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('results').innerHTML = `
-                            <h1>Crossword Puzzle Answers for ${date}</h1>
-                            <div class="answers-container">
-                                <div class="answers-box">
-                                    <div class="column">
-                                        <h2>Across</h2>
-                                        <ul>
-                                            ${data.across.map(answer => `<li>${answer}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                    <div class="column">
-                                        <h2>Down</h2>
-                                        <ul>
-                                            ${data.down.map(answer => `<li>${answer}</li>`).join('')}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            ${data.img_src ? `
-                            <div class="grid-container">
-                                <h2>Completed Grid</h2>
-                                <img src="${data.img_src}" alt="Completed Grid">
-                            </div>` : ''}
-                            <a class="back-link" href="/">Solve Another Puzzle!</a>
-                        `;
-                    })
-                    .catch(error => {
-                        console.error('Error fetching results:', error);
-                        document.getElementById('results').innerHTML = `
-                            <div class="error-container">
-                                <h1>Error</h1>
-                                <p>Failed to load crossword results. Please try again later.</p>
-                                <a class="back-link" href="/">Go Back</a>
-                            </div>
-                        `;
-                    });
-            } else {
-                document.getElementById('results').innerHTML = `
-                    <div class="error-container">
-                        <h1>Error</h1>
-                        <p>No date provided.</p>
-                        <a class="back-link" href="/">Go Back</a>
-                    </div>
-                `;
-            }
-        });
-    </script>
 </head>
 <body>
-    <div id="results"></div>
+    <h1>Crossword Puzzle Answers for {{ date }}</h1>
+    <div class="answers-container">
+        <div class="answers-box">
+            <div class="column">
+                <h2>Across</h2>
+                <ul>
+                    {% for answer in across %}
+                    <li>{{ answer|safe }}</li> 
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="column">
+                <h2>Down</h2>
+                <ul>
+                    {% for answer in down %}
+                    <li>{{ answer|safe }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% if img_src %}
+    <div class="grid-container">
+        <h2>Completed Grid</h2>
+        <img src="{{ img_src }}" alt="Completed Grid">
+    </div>
+    {% endif %}
+    <a class="back-link" href="/">Solve Another Puzzle!</a>
 </body>
 </html>
