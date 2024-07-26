@@ -3,36 +3,62 @@
 <head>
    <meta charset="UTF-8">
    <title>Crossword Results</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-   <h1>Crossword Puzzle Answers for {{ date }}</h1>
+   <h1>Crossword Puzzle Answers for <span id="date"></span></h1>
    <div class="answers-container">
        <div class="answers-box">
            <div class="column">
                <h2>Across</h2>
-               <ul>
-                   {% for answer in across %}
-                   <li>{{ answer|safe }}</li>
-                   {% endfor %}
-               </ul>
+               <ul id="across-answers"></ul>
            </div>
            <div class="column">
                <h2>Down</h2>
-               <ul>
-                   {% for answer in down %}
-                   <li>{{ answer|safe }}</li>
-                   {% endfor %}
-               </ul>
+               <ul id="down-answers"></ul>
            </div>
        </div>
    </div>
-   {% if img_src %}
    <div class="grid-container">
        <h2>Completed Grid</h2>
-       <img src="{{ img_src }}" alt="Completed Grid">
+       <img id="grid-img" src="" alt="Completed Grid">
    </div>
-   {% endif %}
    <a class="back-link" href="/">Solve Another Puzzle!</a>
+
+   <script>
+       function getQueryParam(param) {
+           var urlParams = new URLSearchParams(window.location.search);
+           return urlParams.get(param);
+       }
+
+       document.addEventListener('DOMContentLoaded', function() {
+           var date = getQueryParam('date');
+           document.getElementById('date').textContent = date;
+
+           // Simulated data, replace this with actual data if available
+           var acrossAnswers = ['Example Across 1', 'Example Across 2'];
+           var downAnswers = ['Example Down 1', 'Example Down 2'];
+           var imgSrc = 'path/to/sample-grid.png'; // Update with your grid image path
+
+           // Populate the lists
+           var acrossList = document.getElementById('across-answers');
+           acrossAnswers.forEach(function(answer) {
+               var li = document.createElement('li');
+               li.textContent = answer;
+               acrossList.appendChild(li);
+           });
+
+           var downList = document.getElementById('down-answers');
+           downAnswers.forEach(function(answer) {
+               var li = document.createElement('li');
+               li.textContent = answer;
+               downList.appendChild(li);
+           });
+
+           if (imgSrc) {
+               document.getElementById('grid-img').src = imgSrc;
+           }
+       });
+   </script>
 </body>
 </html>
