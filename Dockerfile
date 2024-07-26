@@ -17,5 +17,4 @@ COPY . .
 ENV FLASK_APP=app.py
 
 # Command to run the application
-CMD ["python", "app.py"]
-
+CMD ["flask", "run", "--host=0.0.0.0"]
