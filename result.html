@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Crossword Results</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <h1>Crossword Puzzle Answers for {{ date }}</h1>
+   <div class="answers-container">
+       <div class="answers-box">
+           <div class="column">
+               <h2>Across</h2>
+               <ul>
+                   {% for answer in across %}
+                   <li>{{ answer|safe }}</li>
+                   {% endfor %}
+               </ul>
+           </div>
+           <div class="column">
+               <h2>Down</h2>
+               <ul>
+                   {% for answer in down %}
+                   <li>{{ answer|safe }}</li>
+                   {% endfor %}
+               </ul>
+           </div>
+       </div>
+   </div>
+   {% if img_src %}
+   <div class="grid-container">
+       <h2>Completed Grid</h2>
+       <img src="{{ img_src }}" alt="Completed Grid">
+   </div>
+   {% endif %}
+   <a class="back-link" href="/">Solve Another Puzzle!</a>
+</body>
+</html>
