@@ -110,4 +110,5 @@ def format_clues(clue_html):
     return formatted_clues
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=int(os.environ.get('PORT', 5000)), host='0.0.0.0')
+
