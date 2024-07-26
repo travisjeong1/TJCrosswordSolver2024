@@ -1,0 +1,199 @@
+body {
+   font-family: Arial, sans-serif;
+   margin: 20px;
+}
+
+
+h1 {
+   border: 2px forestgreen solid;
+   padding: 10px;
+   color: #333;
+   font-size: 40px;
+   text-align: center;
+   margin-bottom: 30px;
+   font-family: 'Trebuchet MS';
+}
+
+
+h2 {
+   font-size: 25px;
+   color: black;
+   font-family: 'Trebuchet MS';
+   text-align: center;
+}
+
+
+form {
+   margin-bottom: 20px;
+   text-align: center;
+}
+
+
+label {
+   display: block;
+   margin-bottom: 5px;
+}
+
+
+input[type="text"] {
+   width: 20%;
+   padding: 8px;
+   margin-bottom: 20px;
+   margin-top: 6px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+}
+
+
+/* General button styles */
+button {
+   padding: 10px 20px;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+   font-size: 16px;
+}
+
+
+.todaybutton-container {
+   text-align: center;
+}
+
+
+.today-button {
+   background-color: #28a745;
+   color: #fff;
+   width: 50%;
+   margin-bottom: 20px;
+   display: inline-block;
+}
+
+
+.today-button:hover {
+   background-color: #218838;
+}
+
+
+/* Style for main solve button */
+.solve-button {
+   background-color: #007BFF;
+   color: #fff;
+}
+
+
+.solve-button:hover {
+   background-color: #0056b3;
+}
+
+
+pre {
+   white-space: pre-wrap;
+   word-wrap: break-word;
+}
+
+
+/* Code for the shaded box container */
+.box-container {
+   background-color: #f9f9f9;
+   border: 1px solid #ccc;
+   padding: 20px;
+   margin: 0 auto;
+   width: 60%;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   border-radius: 8px;
+   text-align: center;
+}
+
+
+.answers-container {
+   display: flex;
+   justify-content: center;
+   margin-bottom: 20px;
+}
+
+
+.answers-box {
+   border: 1px solid #ccc;
+   background-color: #f9f9f9;
+   padding: 20px;
+   margin-bottom: 20px;
+   display: flex;
+   justify-content: space-between;
+   width: 80%;
+   position: relative;
+}
+
+
+.column {
+   width: 45%;
+}
+
+
+/* Code for divider in between across and down columns */
+.column:not(:last-child)::after {
+   content: "";
+   display: block;
+   width: 20px;
+   background-color: #f9f9f9;
+   position: absolute;
+   top: 0;
+   bottom: 0;
+   left: 50%;
+   transform: translateX(-50%);
+}
+
+
+ul {
+   list-style-type: none;
+   padding: 0;
+}
+
+
+li {
+   margin-bottom: 5px;
+}
+
+
+/* Underline only the text after the final "-" with space */
+li::before {
+   content: attr(data-underlined);
+   text-decoration: underline;
+}
+
+
+.grid-container {
+   text-align: center;
+}
+
+
+.grid-container img {
+   max-width: 80%;
+   height: auto;
+   border: 1px solid #333;
+}
+
+
+.back-link {
+   display: block;
+   margin-top: 20px;
+   text-align: center;
+   color: #007BFF;
+   font-size: 20px;
+}
+
+
+.error-container {
+   text-align: center;
+   margin: 50px;
+}
+
+
+.error-container h1 {
+   color: #d9534f;
+}
+
+
+.error-container p {
+   font-size: 18px;
+   color: #333;
+}
