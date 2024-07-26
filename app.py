@@ -8,7 +8,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime
 import re
 
-
+        
 app = Flask(__name__)
 
 
@@ -38,18 +38,21 @@ def solve_for_date(date_str):
 
 
    formatted_date = date.strftime('%Y/%m/%d')  # Ensures the date is in 0000/00/00 format
-  
    url = f"https://laxcrossword.com/{formatted_date}"
-
 
    # Use Selenium to handle dynamic content loaded via JavaScript
    chrome_options = Options()
-   chrome_options.add_argument("--headless")  # Run in headless mode
-   driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
-   driver.get(url)
-   page_source = driver.page_source
-   driver.quit()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
 
+        driver = webdriver.Chrome(
+            service=ChromeService(ChromeDriverManager().install()), 
+            options=chrome_options
+        )
+        driver.get(url)
+        page_source = driver.page_source
+        driver.quit()
 
    soup = BeautifulSoup(page_source, 'html.parser')
 
